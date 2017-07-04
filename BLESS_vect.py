@@ -59,7 +59,7 @@ fname = "datasets/BLESS/BLESS_random-new5.txt"
 with open(fname) as f:
     hyper = f.readlines()
 # you may also want to remove whitespace characters like `\n` at the end of each line
-hyper = [x.strip('\n') for x in hyper] 
+hyper = [x.strip('\n') for x in hyper] x
 hyper = [x.split('\t') for x in hyper] 
 hyper0 = [x[0].split('-n')[0] for x in hyper] 
 hyper1 = [x[2].split('-n')[0] for x in hyper] 

@@ -89,7 +89,7 @@ def main(_):
   y_ = tf.placeholder(tf.float32, [None, 2])
 
   # Define model
-  h_size = 20   														# 100 neurons in hidden layer
+  h_size = 20   														# 20 neurons in hidden layer
   W1 = tf.Variable(tf.zeros([600, h_size]))
   b1 = tf.Variable(tf.zeros([h_size]))
   W2 = tf.Variable(tf.zeros([h_size, 2]))

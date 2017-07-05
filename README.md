@@ -6,9 +6,9 @@ binary_classification_NN.py  (Binary classification using neural network)
 
 Classify between 
 
-    * hypernyms v/s co-siblings (hyper -- coord)
-    *. hypernyms v/s random  (hyper -- random)
-    * random v/s co-siblings (rand -- coord)
+* hypernyms v/s co-siblings (hyper -- coord)
+* hypernyms v/s random  (hyper -- random)
+* random v/s co-siblings (rand -- coord)
 
 Argument split to suggest percentage of word pairs to be used for training (--split 02 means 20% training and 80% test)
     
@@ -21,10 +21,11 @@ python binary_classification_NN.py --pretrained Models/GoogleNews-vectors-negati
 binary_classification_reg.py  (Binary classification using logistic regression) 
 
 Classify between 
-    * hypernyms v/s co-siblings (hyper -- coord)
-    * hypernyms v/s random  (hyper -- random)
-    * random v/s co-siblings (rand -- coord)
-    
+
+* hypernyms v/s co-siblings (hyper -- coord)
+* hypernyms v/s random  (hyper -- random)
+* random v/s co-siblings (rand -- coord)
+
 Argument split to suggest percentage of word pairs to be used for training (--split 02 means 20% training and 80% test)
     
 USAGE:

@@ -1,9 +1,9 @@
 
 
-""" Binary classifiction logistic regresion 
+""" Binary classification using neural network
 #USAGE
-python binary_classification.py --pretrained Models/GoogleNews-vectors-negative300.bin --dataset BLESS --Relation1 random --Relation2 coord
-python binary_classification.py --pretrained Models/GoogleNews-vectors-negative300.bin --dataset ROOT9 --Relation1 random --Relation2 coord
+python binary_classification_NN.py --pretrained Models/GoogleNews-vectors-negative300.bin --dataset BLESS --Relation1 random --Relation2 coord --split 0.2
+python binary_classification_NN.py --pretrained Models/GoogleNews-vectors-negative300.bin --dataset ROOT9 --Relation1 random --Relation2 coord --split 0.2
 
 """
 from __future__ import absolute_import
@@ -79,7 +79,7 @@ def word_embeddding(args):
 	#one-hot encoding for the labels
 	LABELS = np.zeros((len(LAB), 2))
 	LABELS[np.arange(len(LAB)), LAB[:,0]] = 1
-	return EMBEDD[:round(0.2*len(LAB)),:], LABELS[:round(0.2*len(LAB)),:], EMBEDD[round(0.8*len(LAB))+1:,:], LABELS[round(0.8*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
+	return EMBEDD[:round(args.split*len(LAB)),:], LABELS[:round(args.split*len(LAB)),:], EMBEDD[round((1-args.split)*len(LAB))+1:,:], LABELS[round((1-args.split)*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
 
 def main(_):
 
@@ -122,5 +122,6 @@ if __name__ == '__main__':
 	parser.add_argument('--dataset', type=str, required=True, help='Name of dataset BLESS, ROOT9')
 	parser.add_argument('--Relation1', type=str, required=True, help='hyper, cooord, random')
 	parser.add_argument('--Relation2', type=str, required=True, help='hyper, cooord, random')
+	parser.add_argument('--split', type=float, required=True, help='Percentage of training examples [0 to 1]')
 	args = parser.parse_args()
 	tf.app.run(main=main)

@@ -2,6 +2,9 @@
 # WORD Embeddings
 ## Binary Classification
 ### Neural network
+
+The pretrained Google Word2Vec model is available [here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit)
+
 binary_classification_NN.py  (Binary classification using neural network) 
 
 Classify between 

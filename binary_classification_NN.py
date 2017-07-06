@@ -25,7 +25,7 @@ def word_embeddding(args):
 	fname = "datasets/{0}/{0}_{1}-new.txt".format(args.dataset, args.Relation1)
 
 	with open(fname) as f:
-	  R1 = f.readlines()
+		R1 = f.readlines()
 	# you may also want to remove whitespace characters like `\n` at the end of each line
 	R1 = [x.strip('\n') for x in R1] 
 	R1 = [x.split('\t') for x in R1] 
@@ -46,7 +46,7 @@ def word_embeddding(args):
 	fname = "datasets/{0}/{0}_{1}-new.txt".format(args.dataset, args.Relation2)
 
 	with open(fname) as f:
-	  R2 = f.readlines()
+		R2 = f.readlines()
 	# you may also want to remove whitespace characters like `\n` at the end of each line
 	R2 = [x.strip('\n') for x in R2] 
 	R2 = [x.split('\t') for x in R2] 
@@ -79,7 +79,7 @@ def word_embeddding(args):
 	#one-hot encoding for the labels
 	LABELS = np.zeros((len(LAB), 2))
 	LABELS[np.arange(len(LAB)), LAB[:,0]] = 1
-	return EMBEDD[:round(args.split*len(LAB)),:], LABELS[:round(args.split*len(LAB)),:], EMBEDD[round((1-args.split)*len(LAB))+1:,:], LABELS[round((1-args.split)*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
+	return EMBEDD[:round(args.split*len(LAB)),:], LABELS[:round(args.split*len(LAB)),:], EMBEDD[round(args.split*len(LAB))+1:,:], LABELS[round(args.split*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
 
 def main(_):
 

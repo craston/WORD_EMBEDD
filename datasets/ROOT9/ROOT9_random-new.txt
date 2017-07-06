@@ -1,5 +1,4 @@
 car-n	random	professor-n
-robin-n	random	saracen-n
 broccoli-n	random	cardboard-n
 box-n	random	school-n
 lemon-n	random	understatement-n
@@ -705,7 +704,6 @@ pineapple-n	random	heyday-n
 elephant-n	random	testimony-n
 screwdriver-n	random	party-n
 fridge-n	random	route-n
-pig-n	random	mfl-n
 spade-n	random	ssa-n
 rat-n	random	degree-n
 glider-n	random	beetle-n
@@ -804,7 +802,6 @@ owl-n	random	trumpet-n
 strawberry-n	random	native-n
 ambulance-n	random	sauna-n
 oak-n	random	purification-n
-hatchet-n	random	michaelmas-n
 corn-n	random	european-n
 radio-n	random	protection-n
 screwdriver-n	random	hydrocarbon-n
@@ -1079,5 +1076,4 @@ bag-n	random	seizure-n
 flute-n	random	il-n
 cow-n	random	memorial-n
 helicopter-n	random	drawing-n
-herring-n	random	londoner-n
 blouse-n	random	bulletin-n

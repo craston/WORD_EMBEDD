@@ -79,7 +79,7 @@ def word_embeddding(args):
 	#one-hot encoding for the labels
 	LABELS = np.zeros((len(LAB), 2))
 	LABELS[np.arange(len(LAB)), LAB[:,0]] = 1
-	return EMBEDD[:round(args.split*len(LAB)),:], LABELS[:round(args.split*len(LAB)),:], EMBEDD[round((1-args.split)*len(LAB))+1:,:], LABELS[round((1-args.split)*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
+	return EMBEDD[:round(args.split*len(LAB)),:], LABELS[:round(args.split*len(LAB)),:], EMBEDD[round(ars.split*len(LAB))+1:,:], LABELS[round(args.split*len(LAB))+1:,:]   # splitting training 4094 pairs, test 
 
 def main(_):
 

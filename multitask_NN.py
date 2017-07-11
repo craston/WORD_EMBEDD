@@ -150,7 +150,7 @@ def word_embeddding(args):
 	LABELS_test1[:,0] = LABELS_test[:,0]
 	LABELS_test1[:,1] = 1 - LABELS_test[:,0]
 
-	#========== TASK 2 (HYPER) ===================================#
+	#========== TASK 2 (COORD) ===================================#
 	LABELS_train2 = np.zeros((len(LAB_train), 2))
 	LABELS_train2[:,0] = LABELS_train[:,1]
 	LABELS_train2[:,1] = 1 - LABELS_train[:,1]
@@ -159,7 +159,7 @@ def word_embeddding(args):
 	LABELS_test2[:,0] = LABELS_test[:,1]
 	LABELS_test2[:,1] = 1 - LABELS_test[:,1]
 
-	#========== TASK 3 (HYPER) ===================================#
+	#========== TASK 3 (RANDOM) ===================================#
 	LABELS_train3 = np.zeros((len(LAB_train), 2))
 	LABELS_train3[:,0] = LABELS_train[:,2]
 	LABELS_train3[:,1] = 1 - LABELS_train[:,2]
@@ -202,11 +202,11 @@ def main(_):
 
 	cross_entropy  = cross_entropy1 + cross_entropy2 + cross_entropy3
 
-	train_step1 = tf.train.GradientDescentOptimizer(0.1).minimize(cross_entropy1)
-	train_step2 = tf.train.GradientDescentOptimizer(0.1).minimize(cross_entropy2)
-	train_step3 = tf.train.GradientDescentOptimizer(0.1).minimize(cross_entropy3)
+	train_step1 = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy1)
+	train_step2 = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy2)
+	train_step3 = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy3)
 
-	train_step  = tf.train.GradientDescentOptimizer(1.0).minimize(cross_entropy)
+	train_step  = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy)
 
 	sess = tf.InteractiveSession()
 	tf.global_variables_initializer().run()
@@ -215,6 +215,7 @@ def main(_):
 
 	# Train
 	for _ in range(2000):
+		'''
 		_, loss = sess.run([train_step, cross_entropy], feed_dict={x: batch_x, y1_: batch_y1, y2_: batch_y2, y3_: batch_y3})
 		print("Task loss = {0}".format(loss))
 
@@ -227,7 +228,7 @@ def main(_):
 
 		_, loss2 = sess.run([train_step2, cross_entropy2], feed_dict={x: batch_x, y1_: batch_y1, y2_: batch_y2, y3_: batch_y3})
 		print("Task2 loss = {0}".format(loss2))
-		'''
+		
 		# Test trained model for each task after each  iteration
 		correct_prediction1 = tf.equal(tf.argmax(y1, 1), tf.argmax(y1_, 1))
 		accuracy1 = tf.reduce_mean(tf.cast(correct_prediction1, tf.float32))
@@ -250,5 +251,6 @@ if __name__ == '__main__':
 	parser.add_argument('--dataset', type=str, required=True, help='Name of dataset BLESS, ROOT9')
 	parser.add_argument('--split', type=float, required=True, help='Percentage of training examples [0 to 1]')
 	parser.add_argument('--balance', type=int, required=True, help='1 for balanced else unbalanced')
+	parser.add_argument('--learning_rate', type=float, required=True, help='learning rate')
 	args = parser.parse_args()
 	tf.app.run(main=main)

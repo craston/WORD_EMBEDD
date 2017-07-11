@@ -6,7 +6,7 @@ Co-siblings = 1
 Random      = 2
 
 USAGE 
-python multi-class-NN.py --dataset ROOT9 --split 0.1 --balance 0
+python multi-class-NN.py --pretrained Models/GoogleNews-vectors-negative300.bin --dataset ROOT9 --split 0.1 --balance 0 --learning_rate 0.5
 
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/beginners
@@ -28,6 +28,7 @@ FLAGS = None
 # function which generates WORD vectors and returns training and test feature vectors
 def word_embeddding():
 
+  model = gensim.models.KeyedVectors.load_word2vec_format('{0}'.format(args.pretrained), binary=True) 
   #========== HYPERNYM vector generation ======================#
   fname = "datasets/{0}/{0}_hyper-sort.txt".format(args.dataset)
 
@@ -95,7 +96,7 @@ def word_embeddding():
   #Balancing the pairs:
   if(args.balance == 1):
     least_number = min([len(labels_hyper), len(labels_coord), len(labels_rand)])
-    print("least number = {0}".format(least_number))
+    #print("least number = {0}".format(least_number))
 
     v_hyper = v_hyper[:least_number,:]
     v_coord = v_coord[:least_number,:]
@@ -103,7 +104,7 @@ def word_embeddding():
     labels_hyper = labels_hyper[:least_number]
     labels_coord = labels_coord[:least_number]
     labels_rand  = labels_rand[:least_number]
-    print("testing length = {0}".format(round(args.split*len(labels_hyper))))
+    #print("testing length = {0}".format(round(args.split*len(labels_hyper))))
   
   v_hyper_train      = v_hyper[:round(args.split*len(labels_hyper)),:]
   v_hyper_test       = v_hyper[round(args.split*len(labels_hyper))+1:,:]
@@ -154,8 +155,8 @@ def main(_):
   # Define input and output placeholders
   x = tf.placeholder(tf.float32, [None, 600])
   y_ = tf.placeholder(tf.float32, [None, 3])
-
-  h_size = 10                              # hidden neurons in hidden layer
+  '''
+  h_size = 10                            # hidden neurons in hidden layer
   W1 = tf.Variable(tf.zeros([600, h_size]))
   b1 = tf.Variable(tf.zeros([h_size]))
   W2 = tf.Variable(tf.zeros([h_size, 3]))
@@ -163,9 +164,13 @@ def main(_):
   
   h = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
   y = tf.matmul(h, W2) + b2
-
+  '''
+  W1 = tf.Variable(tf.zeros([600, 3]))
+  b1 = tf.Variable(tf.zeros([3]))
+  y = tf.matmul(x, W1) + b1
+  
   cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
-  train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+  train_step = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy)
 
   sess = tf.InteractiveSession()
   tf.global_variables_initializer().run()
@@ -185,5 +190,7 @@ if __name__ == '__main__':
   parser.add_argument('--pretrained', type=str, required=True, help='Pretrained model path')
   parser.add_argument('--dataset', type=str, required=True, help='Name of dataset BLESS, ROOT9')
   parser.add_argument('--split', type=float, required=True, help='Percentage of training examples [0 to 1]')
+  parser.add_argument('--balance', type=float, required=True, help='1 for balanced datasets')
+  parser.add_argument('--learning_rate', type=float, required=True, help='Learning rate')
   args = parser.parse_args()
-  tf.app.run(main=main
+  tf.app.run(main=main)

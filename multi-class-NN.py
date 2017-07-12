@@ -30,7 +30,7 @@ def word_embeddding():
 
   model = gensim.models.KeyedVectors.load_word2vec_format('{0}'.format(args.pretrained), binary=True) 
   #========== HYPERNYM vector generation ======================#
-  fname = "datasets/{0}/{0}_hyper-sort.txt".format(args.dataset)
+  fname = "datasets/{0}/{0}_hyper-new.txt".format(args.dataset)
 
   with open(fname) as f:
     hyper = f.readlines()
@@ -51,7 +51,7 @@ def word_embeddding():
   labels_hyper = np.zeros(v_hyper.shape[0], dtype=np.int)   # Class label for hypernym = 0
 
   #========== CO-SIBLING vector generation ======================#
-  fname = "datasets/{0}/{0}_coord-sort.txt".format(args.dataset)
+  fname = "datasets/{0}/{0}_coord-new.txt".format(args.dataset)
 
   with open(fname) as f:
     coord = f.readlines()
@@ -72,7 +72,7 @@ def word_embeddding():
 
 
   #========== RANDOM vector generation ======================#
-  fname = "datasets/{0}/{0}_random-sort.txt".format(args.dataset)
+  fname = "datasets/{0}/{0}_random-new.txt".format(args.dataset)
 
   with open(fname) as f:
     rand = f.readlines()
@@ -155,7 +155,7 @@ def main(_):
   # Define input and output placeholders
   x = tf.placeholder(tf.float32, [None, 600])
   y_ = tf.placeholder(tf.float32, [None, 3])
-  '''
+  
   h_size = 10                            # hidden neurons in hidden layer
   W1 = tf.Variable(tf.zeros([600, h_size]))
   b1 = tf.Variable(tf.zeros([h_size]))
@@ -168,7 +168,7 @@ def main(_):
   W1 = tf.Variable(tf.zeros([600, 3]))
   b1 = tf.Variable(tf.zeros([3]))
   y = tf.matmul(x, W1) + b1
-  
+  '''
   cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
   train_step = tf.train.GradientDescentOptimizer(args.learning_rate).minimize(cross_entropy)
 
@@ -181,9 +181,30 @@ def main(_):
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
     # Test trained model after each iteration
-    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    print(sess.run(accuracy, feed_dict={x: test_xs, y_: test_ys}))
+  correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+  accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+  #print(sess.run(accuracy, feed_dict={x: test_xs, y_: test_ys}))
+  accuracy, result = sess.run([accuracy, y], feed_dict={x: test_xs, y_: test_ys})
+  print(accuracy)
+  print(result)
+
+  index = result.argmax(axis =1)
+  for i in range(len(index)):
+    for j in range(3):
+      if j == index[i]:
+        result[i, j] = 1
+      else:
+        result[i, j] = 0
+
+  print(index) 
+  print(result)
+
+  task1 = np.mean(result[:,0] == test_ys[:,0])
+  task2 = np.mean(result[:,1] == test_ys[:,1])
+  task3 = np.mean(result[:,2] == test_ys[:,2])
+  print(task1)
+  print(task2)
+  print(task3)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Classification of relations')
